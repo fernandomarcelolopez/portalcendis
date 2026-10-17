@@ -1,0 +1,20 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    height: 100vh;
+  }
+  
+.encabezado {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 22px;
+  border: 0px solid black;
+}
+
+.encabezado h1{
+  font-size: 25px;
+  color: black;
+  border: 0px solid black;
+}

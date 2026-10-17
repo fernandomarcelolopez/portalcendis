@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="img/Logo.png" />
+    <title>Portal Cendis</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<div class="custom-login-page">
+    <div class="custom-login-card">
+        <div class="login-logo-container">
+            <img alt="logo CENDIS" class="login-logo" src="img/logoweb.png"/>
+        </div>
+
+            <div class="form-group">
+                <label for="login" class="form-label">Usuario</label>
+                <input type="text" placeholder="Usuario" name="username" id="username" class="custom-input" required="required" autocapitalize="off" autocomplete="username"/>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" placeholder="Password" name="password" id="password" class="custom-input" required="required" autocomplete="current-password" t-att-autofocus="'autofocus' if login else None" maxlength="4096"/>
+            </div>
+            <br/>
+            <p id="falla" class="alert alert-danger" t-if="error" role="alert" ></p>
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <button id="button" type="submit" class="btn btn-primary" style="width: 100%; text-align: center; display: flex; align-items: center; justify-content: center;">Ingresar</button>
+            
+            </div>
+
+            <input type="hidden" name="type" value="password"/>
+            <input type="hidden" name="redirect" t-att-value="redirect"/>
+        </form>
+    </div>
+    </div>
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+.custom-login-page {background-color: #071d2b;min-height: 100vh;display: flex;justify-content: center;align-items: center;font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;padding: 20px;box-sizing: border-box;}
+.custom-login-card {background-color: #ffffff;width: 100%;max-width: 420px;padding: 40px 30px;border-radius: 12px;box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);box-sizing: border-box;}
+.login-logo-container {text-align: center;margin-bottom: 28px;}
+.login-logo {max-width: 220px;height: auto;display: inline-block;}
+.custom-login-form {display: flex;flex-direction: column;gap: 18px;}
+.form-hidden {display: none !important;}
+.form-group {display: flex;flex-direction: column;gap: 6px;}
+.form-label {font-size: 14px;font-weight: 600;color: #333333;}
+.custom-input {width: 100%;padding: 10px 14px;font-size: 14px;border: 1px solid #cccccc;border-radius: 6px;outline: none;transition: border-color 0.2s ease, box-shadow 0.2s ease;box-sizing: border-box;}
+.custom-input:focus {border-color: #714B67;box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.15);}
+.input-inline-group {display: flex;gap: 8px;}
+.form-actions {display: flex;flex-direction: column;gap: 12px;margin-top: 10px;}
+.btn-primary {background-color: #714B67;color: #ffffff;padding: 12px;font-size: 15px;font-weight: 600;border: none;border-radius: 6px;cursor: pointer;transition: background-color 0.2s ease;width: 100%;}
+.btn-primary:hover {background-color: #5a3c52;}
+.btn-secondary {background-color: #00A09D;color: #ffffff;padding: 10px 14px;font-size: 13px;text-decoration: none;border-radius: 6px;white-space: nowrap;display: inline-flex;align-items: center;transition: background-color 0.2s ease;}
+.btn-secondary:hover {background-color: #008380;}
+.btn-link {background: none;border: none;color: #714B67;font-size: 13px;cursor: pointer;text-decoration: underline;padding: 4px;}
+.btn-link:hover {color: #5a3c52;}
+.alert {padding: 10px 14px;border-radius: 6px;font-size: 13px;margin-top: 4px;}
+.alert-danger {background-color: #fce8e6;color: #d93025;border: 1px solid #f5c6cb;visibility: hidden;}
+.alert-success {background-color: #e6f4ea;color: #137333;border: 1px solid #c3e6cb;} 
+@media (max-width: 560px) {
+        .custom-login-page {width: 100%;max-width: 420px;padding: 12px 8px;align-items: flex-start; background-color:#fcfcfc}
+        .custom-login-card {
+            padding: 24px 16px;
+            border-radius: 8px;
+        }
+        .login-logo {
+            max-width: 150px;
+        }
+        .custom-title {
+            font-size: 1.15rem;
+            margin-bottom: 16px;
+        }
+        .custom-input {
+            font-size: 13.5px;
+            padding: 8px 10px;
+        }
+        .btn-primary {
+            font-size: 14px;
+        }
+    }
