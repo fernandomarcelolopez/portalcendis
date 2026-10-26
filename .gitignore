@@ -1,0 +1,7 @@
+# Variables de entorno y credenciales (vital no subirlas)
+/api/conn.php
+/api/config.php
+
+# Dependencias
+
+# Archivos compilados y salidas

@@ -24,18 +24,14 @@ else
         {
             //crear token de conexion
             $inicio= date("Y-m-d H:i:s");
-            $minuto=intval(date("i")) + 3;
-            $final= date("Y")."-".date("m")."-".date("d")." ".date("H").":".$minuto.":".date("s");
-            //$sentencia = "INSERT INTO conexiones (Usuario, Clave, Inicio, Final) VALUES ('".$nombre."', '".$clave."', '".$inicio."', '".$final."')";
-            //$consu1 = mysqli_query($iden,$sentencia);
-            
-            //$registro = "SELECT * FROM conexiones";
-            //$result = mysqli_query($iden,$registro);
-            //while($datos1 = mysqli_fetch_assoc($result)) 
-            //{ 
-                $tokena=$datos['Id'];
-            //}
+            $tokena=$datos['Id'];
+            $ip = $_SERVER['REMOTE_ADDR'];
             $token=md5($tokena.$nombre.$clave);
+            //$minuto=intval(date("i")) + 3;
+            //$final= date("Y")."-".date("m")."-".date("d")." ".date("H").":".$minuto.":".date("s");
+            $sentencia = "INSERT INTO control (token, ip, idpersona, inicio, estado) VALUES ('".$token."', '".$ip."', '".$tokena."', '".$inicio."', 1)";
+            $consu1 = mysqli_query($iden,$sentencia);
+            
             $respuesta = array("respcode"=>"200", "conexion"=>$token, "username"=> $nombre , "password"=>$clave);
             $resp=json_encode($respuesta);
             echo $resp;

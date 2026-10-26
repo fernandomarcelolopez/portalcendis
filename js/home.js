@@ -11,19 +11,42 @@ function obtenerValorParametro(sParametroNombre) {
 }
 
 const token = obtenerValorParametro("token");  
-if (token==null) {
+if (token === null || token === "") {
     var direccion = '../index.html';
     window.location = direccion;
+} 
+else {
+    console.log('token');
+	const myInit = {method: 'GET'};
+	var dire = '../api/validartoken.php?tkn='+ token;
+	const myRequest = new Request(dire,myInit);
+	
+	var respuesta = fetch(myRequest)
+		.then (response =>  {
+			if(response.status == 200 || response.status == 201) {
+				return response.json();
+			} 
+			else {
+				console.log(response.status);
+				throw "Respuesta incorrecta del servidor" ;
+			}
+		})
+		.then (data => {
+			if (data.respcode=="201") {
+				var direccion = '../index.html';
+        		window.location = direccion;
+			} 
+		})
 } 
 
 /*console.log(token);
 history.pushState(null, "", "home");*/
 
-/*home.addEventListener('click',(e) => {
+kpiad.addEventListener('click',(e) => {
     e.preventDefault()
-    var direccion = '../front/home.html?token='+token;
+    var direccion = '../front/kpiad.html?token='+token;
     window.location = direccion;
-})
+})/*
 admin.addEventListener('click',(e) => {
     e.preventDefault()
     var direccion = '../front/admin.html?token='+token;
@@ -32,9 +55,26 @@ admin.addEventListener('click',(e) => {
 const logout=document.getElementById('logout');
 logout.addEventListener('click',(e) => {
     e.preventDefault()
-    var direccion = '../front/logout.html?token='+token;
-    console.log('registro boton');
-    window.location = direccion;
+	const myInit = {method: 'GET'};
+	var dire = '../api/logout.php?tkn='+ token;
+	const myRequest = new Request(dire,myInit);
+	
+	var respuesta = fetch(myRequest)
+		.then (response =>  {
+			if(response.status == 200) {
+				return response.json();
+			} 
+			else {
+				console.log(response.status);
+				throw "Respuesta incorrecta del servidor" ;
+			}
+		})
+		.then (data => {
+			if (data.respcode=="200") {
+				var direccion = '../index.html';
+        		window.location = direccion;
+			} 
+		})
 })
 
 

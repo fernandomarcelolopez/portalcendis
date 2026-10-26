@@ -1,0 +1,157 @@
+.custom-login-page {
+    background-color: #071d2b;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.custom-login-card {
+    background-color: #ffffff;
+    width: 100%;
+    min-height: 90vh;
+    margin: 10px 20px;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+.login-logo-container {
+    text-align: center;
+    margin-bottom: 5px;
+}
+.login-logo {
+    max-height: 50px;
+    height: auto;
+    display: inline-block;
+}
+.custom-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.nav{
+    background-color: white;
+    margin: 2px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.opciones{
+    text-align: center;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.opciones p{
+    margin: 10px;    
+}
+.opciones a{
+    margin: 10px;    
+    color: black;
+    text-decoration: none;
+}
+.logout{
+    text-align: center;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.logout p{
+    margin: 15px;    
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.contenido{
+    margin: 2px;
+    border: 3px solid #071d2b;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+.tarjetas{
+    margin: 5px;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 15px;
+    height: 45vh;
+    width: 85vh;
+}
+.tarjetas .titulo{
+    font-size: 26px;
+    margin-bottom: 0px;
+    text-align: center;
+}
+.tarjetas .imagen{
+    margin: 0px;
+    font-size: 40px;
+    text-align: center;
+}
+.tarjetas .detalle{
+    margin: 0px;
+    align-items: center;
+    text-align: center;
+}
+.tabla-tarjeta1{
+    margin: 0px;
+    margin-left: 20px;
+    align-items: center;
+    text-align: center;
+}
+.tabla-tarjeta1 th,tr,td{
+    margin: 0px;
+    font-size: 15px;
+    text-align: center;
+    border: 1px solid black;
+}        
+.tarjetas .boton{
+    margin: 0px;
+    text-align: center;
+}
+.canvas-tarjetas{
+    position: relative;
+    width: 100%;       /* O un ancho fijo como 500px, 80vw, etc. */
+    max-width: 85vh;  /* Opcional: límite máximo */
+    height: 230px;
+}
+.btn-primary {background-color: #714B67;color: #ffffff;padding: 12px;font-size: 15px;font-weight: 600;border: none;border-radius: 6px;cursor: pointer;transition: background-color 0.2s ease;width: 100%;}
+.btn-primary:hover {background-color: #5a3c52;}
+.btn-secondary {background-color: #00A09D;color: #ffffff;padding: 10px 14px;font-size: 13px;text-decoration: none;border-radius: 6px;white-space: nowrap;display: inline-flex;align-items: center;transition: background-color 0.2s ease;}
+.btn-secondary:hover {background-color: #008380;}
+.btn-link {background: #137333;border: none;border-radius: 5px;color: white;font-size: 15px;cursor: pointer;text-decoration: none;padding: 4px;}
+.btn-link:hover {color: whitesmoke;}
+.alert {padding: 10px 14px;border-radius: 6px;font-size: 13px;margin-top: 4px;}
+.alert-danger {background-color: #fce8e6;color: #d93025;border: 1px solid #f5c6cb;}
+.alert-success {background-color: #e6f4ea;color: #137333;border: 1px solid #c3e6cb;}
+@media (max-width: 560px) {
+        .custom-login-page {width: 100%;max-width: 420px;padding: 12px 8px;align-items: flex-start; background-color:#071d2b}
+        .custom-login-card {
+            padding: 24px 16px;
+            border-radius: 8px;
+        }
+        .login-logo {
+            max-width: 150px;
+        }
+        .custom-title {
+            font-size: 1.15rem;
+            margin-bottom: 16px;
+        }
+        .custom-input {
+            font-size: 13.5px;
+            padding: 8px 10px;
+        }
+        .btn-primary {
+            font-size: 14px;
+        }
+    }
