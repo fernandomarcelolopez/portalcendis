@@ -1,7 +1,8 @@
 <?php
-$token=$_GET['tkn'];
-$inicio=$_GET['finicio'];
-$final=$_GET['ffinal'];
+$token  = $_GET['tkn'] ?? null;
+$inicio = $_GET['finicio'] ?? null;
+$final  = $_GET['ffinal'] ?? null;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
@@ -14,15 +15,15 @@ function call_odoo($method, $model, $domain, $fields) {
     global $url, $db, $uid, $api_key;
     $params = [
         "jsonrpc" => "2.0",
-        "method" => "call",
-        "params" => [
+        "method"  => "call",
+        "params"  => [
             "service" => "object",
-            "method" => "execute_kw",
-            "args" => [
+            "method"  => "execute_kw",
+            "args"    => [
                 $db, (int)$uid, $api_key,
                 $model, $method,
                 [$domain],
-                ['fields' => $fields, 'limit' => 50000] // Límite alto por si hay muchos movimientos
+                ['fields' => $fields, 'limit' => 50000]
             ]
         ],
         "id" => rand(1, 1000)
@@ -38,19 +39,15 @@ function call_odoo($method, $model, $domain, $fields) {
     curl_close($ch);
     return json_decode($response, true)['result'] ?? [];
 }
-
 // 1. Obtener Stock Actual (Quants)
 $operaciones = call_odoo(
     'search_read', 
     'x_operaciones_agrupada', 
     [['x_fecha', '>=', $inicio], ['x_fecha', '<=', $final], ['x_tipo_agrupados', '=', 'Recepcion'], ['x_studio_stage_id', '=', 'Finalizado']], 
-    ['x_studio_propietarios', 'x_studio_cant_pallets','x_studio_cant_combis']
+    ['x_studio_propietarios', 'x_studio_cant_palletsemipallet_recibidos','x_studio_cant_combis_recibidas' ]
 );
-
-
 echo json_encode([
     'status'=> 200,
     'operaciones' => $operaciones,
 ]);
 exit;
-?>

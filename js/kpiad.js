@@ -174,74 +174,209 @@ fetch(myRequest)
         } else {
             contenedorTabla.innerHTML = filasHTML;
         }
+		var propFinal=[];
+		var cantFinal=[];
+		Object.entries(resumen).forEach(([propietarioId, datos]) => {
+            const propietarioNombre = NOMBRES_PROPIETARIOS[propietarioId] || `PROPIETARIO ${propietarioId}`;
+			propFinal.push(propietarioNombre);
+			cantFinal.push(datos.cantidadRegistros);
+        });
+		const ctx = document.getElementById('grafico0').getContext('2d');
+
+		const miGrafico = new Chart(ctx, {
+		  type: 'doughnut', 
+		  data: {
+			labels: propFinal,
+			datasets: [{
+			  label: 'Recepciones',
+			  data: cantFinal, 
+			  backgroundColor: [
+				'rgba(0, 145, 218, 0.7)',   // Azul
+				'rgba(154, 203, 58, 0.7)',  // Verde
+				'rgba(115, 60, 140, 0.7)',  // Púrpura
+				'rgba(235, 110, 50, 0.7)',   // Naranja
+				'rgba(255, 206, 86, 0.7)',  // Amarillo
+				'rgba(75, 192, 192, 0.7)',  // Turquesa
+				'rgba(54, 162, 235, 0.7)',   // Celeste
+				'rgba(220, 53, 69, 0.7)',   // Rojo carmesí
+				'rgba(233, 30, 99, 0.7)',   // Rosa / Magenta
+				'rgba(121, 85, 72, 0.7)',   // Marrón / Café				
+			  ],
+			  borderWidth: 1,
+			  borderColor: '#ffffff'
+			}]
+		  },
+		  options: {
+				plugins: {
+					// Ocultamos la leyenda inferior tradicional
+					legend: {
+						display: false
+					},
+					// Configuramos los textos en cada porción
+					datalabels: {
+						color: '#fff', // Color del texto (blanco para que contraste con el fondo)
+						textAlign: 'center',
+						font: {
+							weight: 'bold',
+							size: 11
+						},
+						formatter: function(value, context) {
+							// Ocultar etiquetas en sectores diminutos para que no se superpongan
+							if (value <= 2) {
+								return ''; 
+							}
+							
+							// Obtenemos el nombre del propietario
+							const label = context.chart.data.labels[context.dataIndex];
+							
+							// Retorna un array para que Chart.js cree un salto de línea:
+							// Línea 1: Nombre (o resumen)
+							// Línea 2: Valor
+							return [label, value];
+						}
+					}
+				}
+			}
+		});
     })
     .catch(error => {
         console.error('Error al generar la tabla:', error);
     });
 
-// crear grafico de la tarjeta 2
-const categorias = ['Enero', 'Febrero', 'Marzo', 'Abril'];
-
-const datos2023 = [65, 59, 80, 81];
-const datos2024 = [28, 48, 40, 19];
-
-const ctx = document.getElementById('grafico1').getContext('2d');
-
-new Chart(ctx, {
-	type: 'bar',
-	plugins: [ChartDataLabels], // 1. Registras el plugin aquí
-	data: {
-	  labels: categorias,
-	  datasets: [
-		{
-		  label: 'Ventas 2023',
-		  data: datos2023,
-		  backgroundColor: 'rgba(0, 145, 218, 0.7)'
-		},
-		{
-		  label: 'Ventas 2024',
-		  data: datos2024,
-		  backgroundColor: 'rgba(154, 203, 58, 0.7)'
-		}
-	  ]
-	},
-	options: {
-	  indexAxis: 'y', // Gráfico horizontal
-	  maintainAspectRatio: false,
-	  responsive: true,
-	  plugins: {
-		legend: { position: 'top' },
-		title: {
-		  display: false,
-		  text: 'Comparativa de Ventas por Mes'
-		},
-		// 2. Agregas esta configuración para formatear y posicionar las etiquetas
-		datalabels: {
-		  anchor: 'end', // Posición en la punta de la barra: 'start', 'center', 'end'
-		  align: 'start',   // Alineación respecto a la punta: 'start', 'center', 'end', 'right'
-		  color: '#333',  // Color del texto
-		  font: {
-			weight: 'bold',
-			size: 11
-		  },
-		  formatter: (value) => {
-			return value; // Puedes personalizarlo, p. ej. `$ ${value}` o `value.toLocaleString()`
-		  }
-		}
-	  },
-	  scales: {
-		x: {
-		  beginAtZero: true,
-		  // Agregamos un margen superior al eje X para que los números del final no se corten
-		  grace: '10%' 
-		}
-	  }
-	}
-  });
 
 // crear grafico de la tarjeta 3
-const myInit1 = { method: 'GET' };
+const myInit3 = { method: 'GET' };
 var dire = '../api/proxy_tarjeta3.php?tkn=' + token + '&finicio=' + fechaInicio + '&ffinal=' + fechaFinal;
+const myRequest3 = new Request(dire, myInit3);
+
+fetch(myRequest3)
+	.then(response => {
+		if (response.ok) {
+			return response.json();
+		} else {
+			console.error('Estado HTTP:', response.status);
+			throw new Error("Respuesta incorrecta del servidor");
+		}
+	})
+	.then(data => {
+        const operaciones = data.operaciones || [];
+        // Mapeo de IDs de propietarios a nombres
+        const NOMBRES_PROPIETARIOS = {
+            '68': 'CATERING DE ALTURA SAS',
+            '712': 'DIA ARGENTINA SA',
+            '6380': 'ARAMARK SERVICIOS SRL',
+            '7958': 'WORLEY ARGENTINA SA',
+            '4921': 'JSC MINNING SAS',
+            '4833': 'INVERSORA JURAMENTO SA',
+            '6287': 'MAYORISTA-JURAMENTO SA',
+            '6376': 'BUNTECH DEL LAGO SA'
+        };
+        // 1. Agrupar y sumar por propietario
+        const resumen = operaciones.reduce((acc, op) => {
+            const propietarios = op.x_studio_propietarios;
+            // Extraer el ID del propietario (asumiendo formato [id, "Nombre"] de Odoo)
+            const primerId = (Array.isArray(propietarios) && propietarios.length > 0) 
+                ? (typeof propietarios[0] === 'object' ? propietarios[0].id : propietarios[0])
+                : 'Sin Propietario';
+
+            if (!acc[primerId]) {
+                acc[primerId] = {
+                    pallets: 0,
+                    combis: 0
+                };
+            }
+            const cantidadPallets = Array.isArray(op.x_studio_cant_palletsemipallet_recibidos) 
+                ? op.x_studio_cant_palletsemipallet_recibidos[0] 
+                : (Number(op.x_studio_cant_palletsemipallet_recibidos) || 0);
+            const cantidadCombis = Array.isArray(op.x_studio_cant_combis_recibidas) 
+                ? op.x_studio_cant_combis_recibidas[0] 
+                : (Number(op.x_studio_cant_combis_recibidas) || 0);
+            acc[primerId].pallets += cantidadPallets;
+            acc[primerId].combis += cantidadCombis;
+            return acc;
+        }, {});
+        // 2. Construir los arreglos finales
+        const categorias1 = [];
+        const pallets = [];
+        const combis = [];
+        Object.entries(resumen).forEach(([propietarioId, datos]) => {
+            const nombrePropietario = NOMBRES_PROPIETARIOS[propietarioId] || `PROPIETARIO ${propietarioId}`;
+            
+            categorias1.push(nombrePropietario);
+            pallets.push(datos.pallets);
+            combis.push(datos.combis);
+        });
+		console.log(categorias1);
+		console.log(pallets);
+		console.log(combis);
+		
+		//armar grafico
+		const ctx1 = document.getElementById('grafico1').getContext('2d');
+		new Chart(ctx1, {
+		  type: 'bar',
+		  plugins: [ChartDataLabels], // 1. Registras el plugin aquí
+		  data: {
+			labels: categorias1, // Eje Y (Categorías)
+			datasets: [
+			  {
+				label: 'Pallets',
+				data: pallets,
+				backgroundColor: 'rgba(0, 145, 218, 0.7)'
+			  },
+			  {
+				label: 'Combis',
+				data: combis,
+				backgroundColor: 'rgba(154, 203, 58, 0.7)'
+			  }
+			]
+		  },
+		  options: {
+			indexAxis: 'y', // Hace que el gráfico sea vertical
+			layout:{
+				padding:{
+					right:40
+				}
+			},
+			maintainAspectRatio: false,
+			responsive: true,
+			plugins: {
+			  legend: { position: 'bottom' },
+			  title: {
+				display: false,
+				text: 'Comparativa de Ventas por Mes'
+			  },
+				// 2. Agregas esta configuración para formatear y posicionar las etiquetas
+				datalabels: {
+					anchor: 'end', // Posición en la punta de la barra: 'start', 'center', 'end'
+					align: 'end',   // Alineación respecto a la punta: 'start', 'center', 'end', 'right'
+					color: '#333',  // Color del texto
+					font: {
+					weight: 'bold',
+					size: 11
+					},
+				formatter: (value) => {
+					// Oculta el número en la barra si el valor es 0
+					return value > 0 ? value : '';
+					}
+					}
+				},
+			},
+			scales: {
+			  x: {
+				beginAtZero: true,
+				// Agregamos un margen superior al eje X para que los números del final no se corten
+				grace: '10%',
+			  }
+			}
+		  });
+		})
+    .catch(error => {
+        console.error('Error al procesar los datos:', error);
+    });
+
+// crear grafico de la tarjeta 4
+const myInit1 = { method: 'GET' };
+var dire = '../api/proxy_tarjeta4.php?tkn=' + token + '&finicio=' + fechaInicio + '&ffinal=' + fechaFinal;
 const myRequest1 = new Request(dire, myInit1);
 
 fetch(myRequest1)
@@ -323,10 +458,15 @@ fetch(myRequest1)
 		  },
 		  options: {
 			indexAxis: 'y', // Hace que el gráfico sea vertical
+			layout:{
+				padding:{
+					right:40
+				}
+			},
 			maintainAspectRatio: false,
 			responsive: true,
 			plugins: {
-			  legend: { position: 'top' },
+			  legend: { position: 'bottom' },
 			  title: {
 				display: false,
 				text: 'Comparativa de Ventas por Mes'
@@ -334,16 +474,17 @@ fetch(myRequest1)
 				// 2. Agregas esta configuración para formatear y posicionar las etiquetas
 				datalabels: {
 					anchor: 'end', // Posición en la punta de la barra: 'start', 'center', 'end'
-					align: 'start',   // Alineación respecto a la punta: 'start', 'center', 'end', 'right'
+					align: 'end',   // Alineación respecto a la punta: 'start', 'center', 'end', 'right'
 					color: '#333',  // Color del texto
 					font: {
 					weight: 'bold',
 					size: 11
 					},
-					formatter: (value) => {
-					return value; // Puedes personalizarlo, p. ej. `$ ${value}` o `value.toLocaleString()`
+				formatter: (value) => {
+					// Oculta el número en la barra si el valor es 0
+					return value > 0 ? value : '';
 					}
-				}
+					}
 				},
 			},
 			scales: {
@@ -359,9 +500,9 @@ fetch(myRequest1)
         console.error('Error al procesar los datos:', error);
     });
 
-// crear grafico de la tarjeta 4
+// crear grafico de la tarjeta 5
 const myInit2 = { method: 'GET' };
-var dire = '../api/proxy_tarjeta4.php?tkn=' + token + '&finicio=' + fechaInicio + '&ffinal=' + fechaFinal;
+var dire = '../api/proxy_tarjeta5.php?tkn=' + token + '&finicio=' + fechaInicio + '&ffinal=' + fechaFinal;
 const myRequest2 = new Request(dire, myInit2);
 
 fetch(myRequest2)
@@ -395,7 +536,7 @@ fetch(myRequest2)
 			}
 
 			servicios.forEach(s => {
-			const nombreSrv = s.servicio || 'Sin Servicio';
+			const nombreSrv = s.servicio.slice(10) || 'Sin Servicio';
 			const cantidad = Number(s.total_cantidad) || 0;
 
 			setServicios.add(nombreSrv);
@@ -422,7 +563,10 @@ fetch(myRequest2)
 			'rgba(235, 110, 50, 0.7)',   // Naranja
 			'rgba(255, 206, 86, 0.7)',  // Amarillo
 			'rgba(75, 192, 192, 0.7)',  // Turquesa
-			'rgba(54, 162, 235, 0.7)'   // Celeste
+			'rgba(54, 162, 235, 0.7)',   // Celeste
+			'rgba(220, 53, 69, 0.7)',   // Rojo carmesí
+			'rgba(233, 30, 99, 0.7)',   // Rosa / Magenta
+			'rgba(121, 85, 72, 0.7)',   // Marrón / Café
 		  ];
 		const ctx2 = document.getElementById('grafico3').getContext('2d');
 		
@@ -440,11 +584,11 @@ fetch(myRequest2)
 			})
 		},
 		options: {
-			indexAxis: 'y', // Gráfico horizontal
+			indexAxis: 'x', // Gráfico horizontal
 			maintainAspectRatio: false,
 			responsive: true,
 			plugins: {
-			legend: { position: 'top' },
+			legend: { position: 'top', display: false },
 			title: {
 				display: false,
 				text: 'Comparativa por Propietario y Servicio'
