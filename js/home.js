@@ -9,14 +9,13 @@ function obtenerValorParametro(sParametroNombre) {
       }
     return null;
 }
-
+var codeid="";
 const token = obtenerValorParametro("token");  
 if (token === null || token === "") {
     var direccion = '../index.html';
     window.location = direccion;
 } 
 else {
-    console.log('token');
 	const myInit = {method: 'GET'};
 	var dire = '../api/validartoken.php?tkn='+ token;
 	const myRequest = new Request(dire,myInit);
@@ -32,6 +31,18 @@ else {
 			}
 		})
 		.then (data => {
+			if (data.respcode=="200") {
+				codeid= data.respdat;
+				//console.log(codeid);
+				if (codeid=== "2"){
+					tarjeta1=document.getElementById('tarjeta-kpiad1');
+					tarjeta1.style.display="";
+					tarjeta1=document.getElementById('tarjeta-kpiad2');
+					tarjeta1.style.display="";
+					tarjeta1=document.getElementById('tarjeta-kpiad3');
+					tarjeta1.style.display="";
+				}	
+			} 
 			if (data.respcode=="201") {
 				var direccion = '../index.html';
         		window.location = direccion;
@@ -42,17 +53,11 @@ else {
 /*console.log(token);
 history.pushState(null, "", "home");*/
 
-kpiad.addEventListener('click',(e) => {
+contra.addEventListener('click',(e) => {
     e.preventDefault()
-    var direccion = '../front/kpiad.html?token='+token;
+    var direccion = '../api/contra.php?token='+token;
     window.location = direccion;
-})/*
-admin.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/admin.html?token='+token;
-    window.location = direccion;
-})*/
-const logout=document.getElementById('logout');
+})
 logout.addEventListener('click',(e) => {
     e.preventDefault()
 	const myInit = {method: 'GET'};
@@ -76,35 +81,8 @@ logout.addEventListener('click',(e) => {
 			} 
 		})
 })
-
-
-/*button1.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/listado.html?token='+token;
-    window.location = direccion;
+kpiad1.addEventListener('click',(e) => {
+	e.preventDefault()
+	var direccion = '../front/kpiad.html?token='+token;
+	window.location = direccion;
 })
-button2.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/consulta.html?token='+token;
-    window.location = direccion;
-})
-button3.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/cumples.html?token='+token;
-    window.location = direccion;
-})
-button4.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/antecedentes.html?token='+token;
-    window.location = direccion;
-})
-button5.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/home.html?token='+token;
-    window.location = direccion;
-})
-button6.addEventListener('click',(e) => {
-    e.preventDefault()
-    var direccion = '../front/home.html?token='+token;
-    window.location = direccion;
-})*/

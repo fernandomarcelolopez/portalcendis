@@ -16,7 +16,6 @@ if (token === null || token === "") {
     window.location = direccion;
 } 
 else {
-    console.log('token');
 	const myInit = {method: 'GET'};
 	var dire = '../api/validartoken.php?tkn='+ token;
 	const myRequest = new Request(dire,myInit);
@@ -306,9 +305,6 @@ fetch(myRequest3)
             pallets.push(datos.pallets);
             combis.push(datos.combis);
         });
-		console.log(categorias1);
-		console.log(pallets);
-		console.log(combis);
 		
 		//armar grafico
 		const ctx1 = document.getElementById('grafico1').getContext('2d');

@@ -12,13 +12,13 @@ $resultado = mysqli_query($iden,$consulta);
 $datos = mysqli_fetch_assoc($resultado);
 if(!$datos)
 {
-    $respuesta = array("respcode"=>"201");
+    $respuesta = array("respcode"=>"201", "respdat"=>"");
     $resp=json_encode($respuesta);
     echo $resp;
 }
 else
 {
-    $respuesta = array("respcode"=>"200");
+    $respuesta = array("respcode"=>"200", "respdat"=>$datos['idpersona']);
     $resp=json_encode($respuesta);
     echo $resp;
 }

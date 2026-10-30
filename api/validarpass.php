@@ -26,7 +26,7 @@ else
             $inicio= date("Y-m-d H:i:s");
             $tokena=$datos['Id'];
             $ip = $_SERVER['REMOTE_ADDR'];
-            $token=md5($tokena.$nombre.$clave);
+            $token=md5($tokena.$nombre.$clave.$inicio);
             //$minuto=intval(date("i")) + 3;
             //$final= date("Y")."-".date("m")."-".date("d")." ".date("H").":".$minuto.":".date("s");
             $sentencia = "INSERT INTO control (token, ip, idpersona, inicio, estado) VALUES ('".$token."', '".$ip."', '".$tokena."', '".$inicio."', 1)";
